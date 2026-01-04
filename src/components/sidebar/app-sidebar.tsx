@@ -11,7 +11,7 @@ export function AppSidebar({...props}: ComponentProps<typeof Sidebar>) {
     const {data: session} = useSession()
 
     return (
-        <Sidebar collapsible="icon" {...props} className="max-w-54">
+        <Sidebar collapsible="icon" {...props} className="max-w-60">
             <NavHeader/>
             <SidebarContent>
                 <NavMain/>
