@@ -12,7 +12,9 @@ export default function RootLayout({children}: Readonly<{
 }>) {
     return (
         <html lang="en">
-        <body>{children}</body>
+        <body className="bg-gray-50">
+        {children}
+        </body>
         </html>
     );
 }

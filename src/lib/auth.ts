@@ -1,5 +1,7 @@
 import NextAuth from "next-auth";
 import Cognito from "@auth/core/providers/cognito";
+import {mapCognitoClaimsToPermissions} from "@/lib/permission-adapter";
+import {AccessLevel} from "@/types/auth";
 
 export const {handlers, signIn, signOut, auth} = NextAuth({
     providers: [
@@ -16,6 +18,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
                 token.accessToken = account.access_token
                 token.idToken = account.id_token
                 token.expiresAt = account.expires_at
+                token.permissions = mapCognitoClaimsToPermissions(profile)
             }
             return token
         },
@@ -26,6 +29,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
                 session.user.username = token.username as string
                 session.accessToken = token.accessToken as string
                 session.idToken = token.idToken as string
+                session.user.permissions = token.permissions as Record<string, AccessLevel>
             }
             return session
         },

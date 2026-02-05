@@ -1,25 +1,50 @@
 "use client"
 
-import {NavHeader} from "@/components/sidebar/nav-header"
-import {NavMain} from "@/components/sidebar/nav-main"
-import {NavFooter} from "@/components/sidebar/nav-footer"
-import {Sidebar, SidebarContent, SidebarFooter, SidebarRail,} from "@/components/ui/sidebar"
-import {useSession} from "next-auth/react"
-import {ComponentProps} from "react"
+import {
+    Sidebar,
+    SidebarContent,
+    SidebarFooter,
+    SidebarGroup,
+    SidebarGroupContent,
+    SidebarGroupLabel,
+    SidebarHeader,
+    SidebarMenu
+} from "@/components/ui/sidebar";
+import {NavHeader} from "@/components/sidebar/nav-header";
+import {NavFooter} from "@/components/sidebar/nav-footer";
+import React from "react";
+import {useSidebarFilter} from "@/hooks/use-sidebar-filter";
+import {AppMenu} from "@/components/sidebar/app-menu";
 
-export function AppSidebar({...props}: ComponentProps<typeof Sidebar>) {
-    const {data: session} = useSession()
+const classLabel = "font-bold text-muted-foreground/80 tracking-widest uppercase text-sm"
+
+export function AppSidebar() {
+    const sidebarItems = useSidebarFilter()
 
     return (
-        <Sidebar collapsible="icon" {...props} className="max-w-60">
-            <NavHeader/>
-            <SidebarContent>
-                <NavMain/>
+        <Sidebar collapsible="icon">
+            <SidebarHeader className="bg-slate-100-">
+                <NavHeader/>
+            </SidebarHeader>
+            <SidebarContent className="bg-slate-100">
+                {sidebarItems.map(group => (
+                    <SidebarGroup key={group.label}>
+                        <SidebarGroupLabel key={group.label} className={classLabel}>
+                            {group.label}
+                        </SidebarGroupLabel>
+                        <SidebarGroupContent className="ml-0.5 -mt-1 tracking-wider">
+                            {group.menus.map(menu => (
+                                <SidebarMenu key={menu.href ?? menu.title}>
+                                    <AppMenu menu={menu}/>
+                                </SidebarMenu>
+                            ))}
+                        </SidebarGroupContent>
+                    </SidebarGroup>
+                ))}
             </SidebarContent>
-            <SidebarFooter className="border-t">
-                <NavFooter user={session?.user}/>
+            <SidebarFooter className="bg-slate-100 border-t">
+                <NavFooter/>
             </SidebarFooter>
-            <SidebarRail/>
         </Sidebar>
     )
 }

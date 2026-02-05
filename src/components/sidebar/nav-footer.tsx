@@ -1,14 +1,14 @@
 "use client"
 
-import {ChevronsUpDown, LogOut,} from "lucide-react"
+import {LogOut, Settings,} from "lucide-react"
 
 import {Avatar, AvatarFallback, AvatarImage,} from "@/components/ui/avatar"
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import {SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar,} from "@/components/ui/sidebar"
-import {signOut} from "next-auth/react";
-import {User} from "next-auth";
+import {signOut, useSession} from "next-auth/react";
 
-export function NavFooter({user}: { user?: User }) {
+export function NavFooter() {
+    const {data: session} = useSession()
     const {isMobile} = useSidebar()
 
     const handleSignOut = async () => {
@@ -27,16 +27,17 @@ export function NavFooter({user}: { user?: User }) {
                     <DropdownMenuTrigger asChild>
                         <SidebarMenuButton size="lg">
                             <Avatar className="h-8 w-8 rounded-lg">
-                                <AvatarImage src={user?.image} alt={user?.name}/>
+                                <AvatarImage src={session?.user?.image ?? "/logo.png"}
+                                             alt={session?.user?.name ?? "dirpe"}/>
                                 <AvatarFallback className="rounded-lg">
-                                    {user?.name?.split(" ").map((n: string) => n[0]).join("").toUpperCase() ?? "US"}
+                                    {session?.user?.name?.split(" ").map((n: string) => n[0]).join("").toUpperCase() ?? "US"}
                                 </AvatarFallback>
                             </Avatar>
                             <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-medium">{user?.name}</span>
-                                <span className="truncate text-xs">{user?.email}</span>
+                                <span className="truncate font-medium">{session?.user?.name}</span>
+                                <span className="truncate text-xs">{session?.user?.email}</span>
                             </div>
-                            <ChevronsUpDown className="ml-auto size-4"/>
+                            <Settings className="ml-auto size-4"/>
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent

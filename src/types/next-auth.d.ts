@@ -4,6 +4,7 @@ declare module "next-auth" {
     interface User extends DefaultUser {
         groups?: string[]
         username?: string
+        permissions?: Record<string, Permissions>
     }
 
     interface Account extends DefaultAccount {
@@ -30,6 +31,7 @@ declare module "next-auth" {
             name?: string
             email?: string
             image?: string
+            permissions?: Record<string, Permissions>
         } & DefaultSession["user"]
         accessToken?: string
         idToken?: string

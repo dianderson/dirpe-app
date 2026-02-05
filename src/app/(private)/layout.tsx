@@ -1,9 +1,10 @@
 import React from "react"
 import {auth} from "@/lib/auth";
 import {redirect} from "next/navigation";
-import AuthProvider from "@/components/auth-provider";
-import {AppSidebar} from "@/components/sidebar/app-sidebar";
+import {SessionProvider} from "next-auth/react"
 import {SidebarProvider} from "@/components/ui/sidebar";
+import AppBreadcrumb from "@/components/app-breadcrumb";
+import {AppSidebar} from "@/components/sidebar/app-sidebar";
 
 export default async function PrivateLayout({children}: { children: React.ReactNode }) {
     const session = await auth()
@@ -11,13 +12,16 @@ export default async function PrivateLayout({children}: { children: React.ReactN
     if (!session) redirect("/login")
 
     return (
-        <AuthProvider>
+        <SessionProvider>
             <SidebarProvider>
                 <AppSidebar/>
-                <main>
-                    {children}
-                </main>
+                <div className="mt-3 mx-4 w-full">
+                    <AppBreadcrumb/>
+                    <main className="mt-3">
+                        {children}
+                    </main>
+                </div>
             </SidebarProvider>
-        </AuthProvider>
+        </SessionProvider>
     )
 }
