@@ -1,5 +1,6 @@
 "use client"
 
+import {usePathname} from "next/navigation";
 import {
     Breadcrumb,
     BreadcrumbItem,
@@ -8,39 +9,40 @@ import {
     BreadcrumbPage,
     BreadcrumbSeparator
 } from "@/components/ui/breadcrumb";
-import {usePathname} from "next/navigation";
-import {Fragment} from "react";
+import {Fragment, useMemo} from "react";
 
 export default function AppBreadcrumb() {
-    const pathname = usePathname()
+    const currentPath = usePathname()
 
-    const route = ('intelligence' + pathname)
-    const segments = route.split('/')
-    const lastIndex = segments.length - 1
+    const crumbs = useMemo(() => {
+        const segments = currentPath.split("/").filter(Boolean)
+
+        return segments.map((segment, index, array) => ({
+            label: segment.charAt(0).toUpperCase() + segment.slice(1),
+            href: "/" + array.slice(0, index + 1).join("/"),
+            hasNext: index < segments.length - 1
+        }))
+    }, [currentPath])
 
     return (
         <Breadcrumb>
             <BreadcrumbList>
-                {segments.map((segment, index) => {
-                    const isNotLast = index < lastIndex
-
-                    return (
-                        <Fragment key={index}>
-                            <BreadcrumbItem>
-                                {isNotLast ? (
-                                    <BreadcrumbLink key={index} className="font-medium">
-                                        {segment}
-                                    </BreadcrumbLink>
-                                ) : (
-                                    <BreadcrumbPage key={index} className="font-bold text-sky-600">
-                                        {segment}
-                                    </BreadcrumbPage>
-                                )}
-                            </BreadcrumbItem>
-                            {isNotLast && <BreadcrumbSeparator/>}
-                        </Fragment>
-                    )
-                })}
+                {crumbs.map(({label, href, hasNext}) => (
+                    <Fragment key={href}>
+                        <BreadcrumbItem className="text-sm font-medium tracking-widest">
+                            {hasNext ? (
+                                <BreadcrumbLink href={href}>
+                                    {label}
+                                </BreadcrumbLink>
+                            ) : (
+                                <BreadcrumbPage className="font-bold text-sky-600">
+                                    {label}
+                                </BreadcrumbPage>
+                            )}
+                        </BreadcrumbItem>
+                        {hasNext && <BreadcrumbSeparator/>}
+                    </Fragment>
+                ))}
             </BreadcrumbList>
         </Breadcrumb>
     )

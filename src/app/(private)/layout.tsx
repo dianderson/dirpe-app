@@ -3,8 +3,8 @@ import {auth} from "@/lib/auth";
 import {redirect} from "next/navigation";
 import {SessionProvider} from "next-auth/react"
 import {SidebarProvider} from "@/components/ui/sidebar";
-import AppBreadcrumb from "@/components/app-breadcrumb";
 import {AppSidebar} from "@/components/sidebar/app-sidebar";
+import AppBreadcrumb from "@/components/app-breadcrumb";
 
 export default async function PrivateLayout({children}: { children: React.ReactNode }) {
     const session = await auth()

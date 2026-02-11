@@ -16,7 +16,6 @@ const menuButtonClasses = `
     group-data-[collapsible=icon]:justify-center
     group-data-[collapsible=icon]:!w-full
 `
-const iconClasses = "!size-4"
 const labelClasses = "text-base group-data-[collapsible=icon]:hidden"
 const chevronClasses = `
     ml-auto transition-transform duration-200 
@@ -33,7 +32,7 @@ export function AppMenu({menu}: { menu: NavMenu }) {
                 <SidebarMenuItem>
                     <CollapsibleTrigger asChild>
                         <SidebarMenuButton tooltip={menu.title} className={menuButtonClasses}>
-                            {menu.icon && <menu.icon className={iconClasses}/>}
+                            {menu.icon && <menu.icon/>}
                             <span className={labelClasses}>{menu.title}</span>
                             <ChevronDown className={chevronClasses}/>
                         </SidebarMenuButton>
@@ -50,7 +49,7 @@ export function AppMenu({menu}: { menu: NavMenu }) {
         <SidebarMenuItem className="active:bg-slate-100">
             <SidebarMenuButton asChild className={menuButtonClasses} isActive={pathname === menu.href}>
                 <Link href={menu.href!}>
-                    {menu.icon && <menu.icon className={iconClasses}/>}
+                    {menu.icon && <menu.icon/>}
                     <span className={labelClasses}>
                         {menu.title}
                     </span>

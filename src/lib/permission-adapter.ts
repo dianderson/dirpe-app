@@ -3,14 +3,15 @@ import {AccessLevel} from "@/types/auth";
 export function mapCognitoClaimsToPermissions(claims: unknown): Record<string, AccessLevel> {
 
     return {
-        "/": AccessLevel.MANAGER,
-        "/payments": AccessLevel.MANAGER,
-        "/checkout": AccessLevel.MANAGER,
-        "/reports": AccessLevel.MANAGER,
-        "/routing/general": AccessLevel.MANAGER,
-        "/routing/providers": AccessLevel.ADMIN,
-        "/routing/orchestrations": AccessLevel.MANAGER,
-        "/developers": AccessLevel.MANAGER,
-        "/settings": AccessLevel.MANAGER
+        "/": AccessLevel.VIEW,
+        "/operation/dashboard": AccessLevel.MANAGER,
+        "/operation/payments": AccessLevel.MANAGER,
+        "/intelligence/checkout": AccessLevel.MANAGER,
+        "/intelligence/reports": AccessLevel.MANAGER,
+        "/intelligence/routing/general": AccessLevel.MANAGER,
+        "/intelligence/routing/providers": AccessLevel.ADMIN,
+        "/intelligence/routing/orchestrations": AccessLevel.MANAGER,
+        "/management/developers": AccessLevel.MANAGER,
+        "/management/settings": AccessLevel.MANAGER
     }
 }

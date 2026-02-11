@@ -1,11 +1,15 @@
 "use client"
 
-import {PaymentMethodConfig, UserProvider} from "@/app/(private)/routing/providers/types";
+import {
+    ProviderStatusToVariant,
+    UserPaymentMethodConfig,
+    UserProvider
+} from "@/app/(private)/intelligence/routing/providers/types";
 import {Card, CardContent} from "@/components/ui/card";
 import {Settings2} from "lucide-react";
 import Image from "next/image";
-import {Badge} from "@/components/ui/badge";
 import Link from "next/link";
+import {Badge} from "@/components/ui/badge";
 
 export function ProviderCard({provider}: { provider: UserProvider }) {
     const hover = `
@@ -25,36 +29,34 @@ export function ProviderCard({provider}: { provider: UserProvider }) {
     `
 
     return (
-        <Link href={`/routing/providers/${provider.code}`}>
+        <Link href={`/intelligence/routing/providers/${provider.code}`}>
             <Card className={cardClass}>
                 <CardContent className="flex items-center justify-between">
                     <div className="flex items-center gap-5">
                         <div className="relative size-16">
                             <Image
                                 src={provider.logo}
-                                alt={provider.name}
+                                alt={provider.label}
                                 fill
-                                sizes="64px"
                                 className="object-contain"
                             />
                         </div>
                         <div className="space-y-1">
                             <div className="flex items-center gap-2">
                                 <h3 className={`${hover} text-xl font-bold tracking-wider text-foreground/75`}>
-                                    {provider.name}
+                                    {provider.label}
                                 </h3>
-                                <Badge variant={provider.status}>
-                                    {provider.status.toUpperCase()}
+                                <Badge variant={ProviderStatusToVariant[provider.status]}>
+                                    {provider.status}
                                 </Badge>
                             </div>
                             <div className="flex items-center gap-3">
                                 {provider.methods.map(method => {
-                                    const {name, icon: Icon} = PaymentMethodConfig[method]
+                                    const {label, icon: Icon, className} = UserPaymentMethodConfig(method)
                                     return (
-                                        <div key={name}
+                                        <div key={label}
                                              className="flex items-center gap-1.5 text-xs uppercase font-semibold tracking-wider text-muted-foreground">
-                                            <Icon className="size-4"/>
-                                            {name}
+                                            <Icon className={`size-4 ${className}`}/> {label}
                                         </div>
                                     )
                                 })}
