@@ -77,7 +77,7 @@ export function RegisterProviderForm({setOpenAction}: { setOpenAction: (open: bo
 
                             itemToStringValue={(provider: Provider) => provider.name}
                         >
-                            <ComboboxInput placeholder="Selecione um provedor">
+                            <ComboboxInput placeholder="Selecione um provedor" className="h-10">
                                 <InputGroupAddon> <Search/> </InputGroupAddon>
                             </ComboboxInput>
                             <ComboboxContent className="pointer-events-auto">
@@ -114,7 +114,7 @@ export function RegisterProviderForm({setOpenAction}: { setOpenAction: (open: bo
                                         data-state={selected ? "checked" : "unchecked"}
                                         className={cardClass}
                                     >
-                                        <CardContent className="flex items-center gap-4">
+                                        <CardContent className="flex items-center gap-4 h-7">
                                             <Switch
                                                 size="sm"
                                                 checked={selected}
